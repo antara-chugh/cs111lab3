@@ -2,17 +2,20 @@
 TODO introduction
 
 ## Building
-```shell
-TODO
-```
+To build, run make. 
 
 ## Running
-```shell
-TODO how to run and results
-```
+To run, run 
+./hash-table-tester -t (#number of threads to use, by default 4) -s (#number of entries to add, by default 25000)
+
+Example:
+./hash-table-tester -t 8 -s 500000
+
+This will run the base implementation and then the two implementations (v1 and v2) with the specified number of threads, and outputs number of μs for each implemeentation, as well as the number of missing entries in the hash table. Correct implementations have no missing entries.
 
 ## First Implementation
 In the `hash_table_v1_add_entry` function, I added "pthread_mutex_lock(&hash_table->lock)" to create a lock at the beginning of the function. With this, I made the entire a function an atomic operation thus preventing multiple threads from adding entries and updating the hash tables at the same time, eliminating data races. The locks are then unlocked before the function returns (in the case that the value already exists in the table) or after the new key and value is added. In addition, I added checks to ensure that the lock and unlock functions ran correctly with no error code. If these functions returned a non zero exit code, I called the destroy table function to free the hash table memory.
+
 
 To support all of this, I added a lock to the hash_table_v1 struct, intialized the lock in the hash_table_v1 create function, and destroyed the lock in the hash_table_v1_destroy function.
 
@@ -39,9 +42,9 @@ V2 runs faster than both V1 and the base implementation
 In V1, locking the entire entry function causes the entire shared hash table to be locked. Even if other threads are trying to update different bins, there access is blocked until a thread is done adding an entry to the hashtable.
 In V2, we only lock the bin that is being updated. This way, if threads are accessing different bins (meaning there are no collisions) they can do so, enabling more parallelization and having the code run faster. 
 
+V2 
+
 TODO more results, speedup measurement, and analysis on v2
 
 ## Cleaning up
-```shell
-TODO how to clean
-```
+run "make clean" in the shell to clean the .o files

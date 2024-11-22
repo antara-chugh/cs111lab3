@@ -37,7 +37,7 @@ struct hash_table_v2 *hash_table_v2_create()
 		if(code!=0){
 			/*free memory of all intialized entries if failure*/
 			for (size_t j = 0; j <=i; ++j) {
-				struct hash_table_entry *entry = &hash_table->entries[i];
+				struct hash_table_entry *entry = &hash_table->entries[j];
 				struct list_head *list_head = &entry->list_head;
 				struct list_entry *list_entry = NULL;
 				while (!SLIST_EMPTY(list_head)) {

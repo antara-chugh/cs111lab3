@@ -1,5 +1,5 @@
 # Hash Hash Hash
-TODO introduction
+In this lab, we explored the ways to implement a hash table safe to use with multithreading and concurrency. Two possible implementations are provided, one where only a single lock is used and one where multiple locks are used.  
 
 ## Building
 To build, run make. 
@@ -33,18 +33,16 @@ To support all of this, I added a lock to the hash_table_entry struct, intialize
 
 
 ### Performance
-```shell
-TODO how to run and results
-```
+After running ./hash-table-tester with the desired parameters, the "Hash Table v2" line in the output will specify the number of μs the implemeentation took and the number of missed entries.
+
 V2 runs faster than both V1 and the base implementation.
 
 In V1, locking the entire entry function causes the entire shared hash table to be locked. Even if other threads are trying to update different bins, there access is blocked until a thread is done adding an entry to the hashtable.
 In V2, we only lock the bin that is being updated. This way, if threads are accessing different bins (meaning there are no collisions) they can do so, enabling more parallelization and having the code run faster. This thus is also faster than the base implementation, as threads are able to do different operations at the same time, which is faster than a serial implementation. 
 
-Some examples of results:
 
 
-TODO more results, speedup measurement, and analysis on v2
+
 
 ## Cleaning up
 run "make clean" in the shell to clean the .o files
